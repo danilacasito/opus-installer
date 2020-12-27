@@ -242,7 +242,7 @@ function Util.findAll(t, name, value)
 end
 
 function Util.shallowCopy(t)
-	if not t then error('Util.shallowCopy: invalid table', 2) end
+	if not t then error('Util.shallowCopy: tabla invalida', 2) end
 	local t2 = { }
 	for k,v in pairs(t) do
 		t2[k] = v
@@ -411,10 +411,10 @@ function Util.readFile(fname)
 end
 
 function Util.writeFile(fname, data)
-	if not fname or not data then error('Util.writeFile: invalid parameters', 2) end
+	if not fname or not data then error('Util.writeFile: parametros invalidos', 2) end
 	local file = io.open(fname, "w")
 	if not file then
-		error('Unable to open ' .. fname, 2)
+		error('No se puede abrir ' .. fname, 2)
 	end
 	file:write(data)
 	file:close()
@@ -459,7 +459,7 @@ end
 function Util.loadTable(fname)
 	local fc = Util.readFile(fname)
 	if not fc then
-		return false, 'Unable to read file'
+		return false, 'No se puede leer el archivo'
 	end
 	local s, m = loadstring('return ' .. fc, fname)
 	if s then
@@ -485,7 +485,7 @@ end
 function Util.download(url, filename)
 	local contents, msg = Util.httpGet(url)
 	if not contents then
-		error(string.format('Failed to download %s\n%s', url, msg), 2)
+		error(string.format('Error al descargar %s\n%s', url, msg), 2)
 	end
 
 	if filename then
@@ -512,7 +512,7 @@ function Util.runUrl(env, url, ...)   -- os.run equivalent
 end
 
 function Util.run(env, path, ...)
-	if type(env) ~= 'table' then error('Util.run: env must be a table', 2) end
+	if type(env) ~= 'table' then error('Util.run: env debe ser una tabla', 2) end
 	setmetatable(env, { __index = _G })
 	local fn, m = loadfile(path, env)
 	if fn then
@@ -529,7 +529,7 @@ end
 
 --[[ String functions ]] --
 function Util.toBytes(n)
-	if not tonumber(n) then error('Util.toBytes: n must be a number', 2) end
+	if not tonumber(n) then error('Util.toBytes: n debe ser un numero', 2) end
 	if n >= 1000000 or n <= -1000000 then
 		return string.format('%sM', math.floor(n/1000000 * 10) / 10)
 	elseif n >= 10000 or n <= -10000 then
@@ -545,7 +545,7 @@ function Util.insertString(str, istr, pos)
 end
 
 function Util.split(str, pattern)
-	if not str then error('Util.split: Invalid parameters', 2) end
+	if not str then error('Util.split: Parametros Invalidos', 2) end
 	pattern = pattern or "(.-)\n"
 	local t = {}
 	local function helper(line) table.insert(t, line) return "" end
@@ -687,7 +687,7 @@ local function getopt( arg, options )
 end
 
 function Util.showOptions(options)
-	print('Arguments: ')
+	print('Argumentos: ')
 	for _, v in pairs(options) do
 		print(string.format('-%s  %s', v.arg, v.desc))
 	end
@@ -718,7 +718,7 @@ function Util.getOptions(options, args, ignoreInvalid)
 			end
 		end
 		if not found and not ignoreInvalid then
-			print('Invalid argument')
+			print('Argumento Invalido')
 			Util.showOptions(options)
 			return false
 		end
