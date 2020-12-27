@@ -61,7 +61,7 @@ local function encodeCommon(val, pretty, tabLevel, tTracking)
 
 	-- Table encoding
 	if type(val) == "table" then
-		assert(not tTracking[val], "Cannot encode a table holding itself recursively")
+		assert(not tTracking[val], "No se puede codificar una tabla manteniéndose de forma recursiva")
 		tTracking[val] = true
 		if isArray(val) then
 			arrEncoding(val, "[", "]", ipairs, function(k,v)
@@ -69,7 +69,7 @@ local function encodeCommon(val, pretty, tabLevel, tTracking)
 			end)
 		else
 			arrEncoding(val, "{", "}", pairs, function(k,v)
-				assert(type(k) == "string", "JSON object keys must be strings", 2)
+				assert(type(k) == "string", "Las claves de objeto JSON deben ser cadenas", 2)
 				str = str .. encodeCommon(k, pretty, tabLevel, tTracking)
 				str = str .. (pretty and ": " or ":") .. encodeCommon(v, pretty, tabLevel, tTracking)
 			end)
@@ -81,7 +81,7 @@ local function encodeCommon(val, pretty, tabLevel, tTracking)
 	elseif type(val) == "number" or type(val) == "boolean" then
 		str = tostring(val)
 	else
-		error("JSON only supports arrays, objects, numbers, booleans, and strings", 2)
+		error("JSON solo admite matrices, objetos, números, valores booleanos y cadenas", 2)
 	end
 	return str
 end
@@ -96,7 +96,7 @@ end
 
 function json.encodeToFile(path, val)
 	local file = io.open(path, "w")
-	assert(file, "Unable to open file")
+	assert(file, "No se puede abrir el archivo")
 	file:write(json.encodePretty(val))
 	file:close()
 end
@@ -143,7 +143,7 @@ local function parseString(str)
 			local escape = str:sub(1,1)
 			str = str:sub(2)
 
-			next = assert(decodeControls[next..escape], "Invalid escape character")
+			next = assert(decodeControls[next..escape], "Carácter de escape no válido")
 		end
 
 		s = s .. next
