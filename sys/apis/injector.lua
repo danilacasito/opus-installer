@@ -1,5 +1,5 @@
 local GIT_URL        = 'https://raw.githubusercontent.com'
-local DEFAULT_UPATH  = GIT_URL .. '/kepler155c/opus-installer/master/sys/apis'
+local DEFAULT_UPATH  = GIT_URL .. '/danilacasito/opus-installer/master/sys/apis'
 
 local http   = _G.http
 local os     = _G.os
@@ -75,6 +75,6 @@ return function(env)
 				error(msg, 2)
 			end
 		end
-		error('Unable to find module ' .. modname)
+		error('No se puede encontrar el modulo ' .. modname)
 	end
 end
