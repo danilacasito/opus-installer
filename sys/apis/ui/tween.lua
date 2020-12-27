@@ -13,12 +13,12 @@ local tween = {
 
 -- easing
 
--- Adapted from https://github.com/EmmanuelOga/easing. See LICENSE.txt for credits.
--- For all easing functions:
--- t = time == how much time has to pass for the tweening to complete
--- b = begin == starting property value
--- c = change == ending - beginning
--- d = duration == running time. How much time has passed *right now*
+-- Adaptado de https://github.com/EmmanuelOga/easing. mire LICENSE.txt para los creditos.
+-- Para todas las funciones facilmente:
+-- t = time == cuánto tiempo tiene que pasar para que se complete la interpolación
+-- b = begin == valor de propiedad inicial
+-- c = change == final - comienzo
+-- d = duration == tiempo de ejecución. Cuánto tiempo ha pasado * ahora mismo *
 
 local pow, sin, cos, pi, sqrt, abs, asin = math.pow, math.sin, math.cos, math.pi, math.sqrt, math.abs, math.asin
 
@@ -251,21 +251,21 @@ local function checkSubjectAndTargetRecursively(subject, target, path)
 		targetType, newPath = type(targetValue), copyTables({}, path)
 		table.insert(newPath, tostring(k))
 		if targetType == 'number' then
-			assert(type(subject[k]) == 'number', "Parameter '" .. table.concat(newPath,'/') .. "' is missing from subject or isn't a number")
+			assert(type(subject[k]) == 'number', "Parameter '" .. table.concat(newPath,'/') .. "' falta en el tema o no es un número")
 		elseif targetType == 'table' then
 			checkSubjectAndTargetRecursively(subject[k], targetValue, newPath)
 		else
-			assert(targetType == 'number', "Parameter '" .. table.concat(newPath,'/') .. "' must be a number or table of numbers")
+			assert(targetType == 'number', "Parameter '" .. table.concat(newPath,'/') .. "' debe ser un número o una tabla de números")
 		end
 	end
 end
 
 local function checkNewParams(duration, subject, target, easing)
-	assert(type(duration) == 'number' and duration > 0, "duration must be a positive number. Was " .. tostring(duration))
+	assert(type(duration) == 'number' and duration > 0, "duracion debe ser un numero positivo. Era " .. tostring(duration))
 	local tsubject = type(subject)
-	assert(tsubject == 'table' or tsubject == 'userdata', "subject must be a table or userdata. Was " .. tostring(subject))
-	assert(type(target)== 'table', "target must be a table. Was " .. tostring(target))
-	assert(type(easing)=='function', "easing must be a function. Was " .. tostring(easing))
+	assert(tsubject == 'table' or tsubject == 'userdata', "tema debe ser una tabla o un dato de usuario. Era " .. tostring(subject))
+	assert(type(target)== 'table', "target debe ser una tabla. Era " .. tostring(target))
+	assert(type(easing)=='function', "easing debe ser una función. Era " .. tostring(easing))
 	checkSubjectAndTargetRecursively(subject, target)
 end
 
@@ -275,7 +275,7 @@ local function getEasingFunction(easing)
 		local name = easing
 		easing = tween.easing[name]
 		if type(easing) ~= 'function' then
-			error("The easing function name '" .. name .. "' is invalid")
+			error("The easing function name '" .. name .. "' es invalido")
 		end
 	end
 	return easing
@@ -299,7 +299,7 @@ local Tween = {}
 local Tween_mt = {__index = Tween}
 
 function Tween:set(clock)
-	assert(type(clock) == 'number', "clock must be a positive number or 0")
+	assert(type(clock) == 'number', "clock debe ser un numero positivo o 0")
 
 	self.initial = self.initial or copyTables({}, self.target, self.subject)
 	self.clock = clock
@@ -328,7 +328,7 @@ function Tween:reset()
 end
 
 function Tween:update(dt)
-	assert(type(dt) == 'number', "dt must be a number")
+	assert(type(dt) == 'number', "dt debe ser un numero")
 	return self:set(self.clock + dt)
 end
 
