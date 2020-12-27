@@ -29,14 +29,14 @@ function git.list(repository)
 		end
 	end
 
-	local data = getContents() or error('Invalid repository')
+	local data = getContents() or error('Repositorio invalido')
 
 	if data.message and data.message:find("API rate limit exceeded") then
-		error("Out of API calls, try again later")
+		error("Fuera de las llamadas a la API, inténtelo de nuevo más tarde")
 	end
 
 	if data.message and data.message == "Not found" then
-		error("Invalid repository")
+		error("Repositorio invalido")
 	end
 
 	local list = { }
