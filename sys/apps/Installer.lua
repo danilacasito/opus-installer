@@ -4,7 +4,7 @@ local http    = _G.http
 local install = _ENV.install
 local os      = _G.os
 
-local url ='https://raw.githubusercontent.com/kepler155c/opus-installer/master/sys/apis/injector.lua'
+local url ='https://raw.githubusercontent.com/danilacasito/opus-installer/master/sys/apis/injector.lua'
 local injector = load(http.get(url).readAll(), 'injector.lua', nil, _ENV)()
 
 -- install a require that only searches github
@@ -23,7 +23,7 @@ local args = { ... }
 local steps = install.steps[args[1] or 'install']
 
 if not steps then
-	error('Invalid install type')
+	error('Tipo de instalación invalido')
 end
 
 local mode = steps[#steps]
@@ -96,13 +96,13 @@ local function getFileList()
 	end
 
 	if not install.files or Util.empty(install.files) then
-		error('File list is missing or empty')
+		error('La lista del archivo falta o esta corrupto')
 	end
 end
 
 --[[ Splash ]]--
 function pages.splash:enable()
-	page.titleBar.title = 'Installer v1.0'
+	page.titleBar.title = 'Installer v1.0 ADAPTADO AL ESPAÑOL'
 	page.titleBar:draw()
 	UI.Viewport.enable(self)
 end
@@ -120,9 +120,9 @@ end
 
 --[[ License ]]--
 function pages.license:enable()
-	page.titleBar.title = 'License Review'
+	page.titleBar.title = 'Revisión de licencia'
 	page.titleBar:draw()
-	page.wizard.nextButton.text = 'Accept'
+	page.wizard.nextButton.text = 'Aceptar'
 	UI.Viewport.enable(self)
 end
 
@@ -141,11 +141,11 @@ end
 --[[ Review ]]--
 function pages.review:enable()
 	if mode == 'uninstall' then
-		page.wizard.nextButton.text = 'Remove'
-		page.titleBar.title = 'Remove Installed Files'
+		page.wizard.nextButton.text = 'Remover'
+		page.titleBar.title = 'Remueve los archivos instalados'
 	else
-		page.wizard.nextButton.text = 'Begin'
-		page.titleBar.title = 'Download and Install'
+		page.wizard.nextButton.text = 'Empezar'
+		page.titleBar.title = 'Descargar e instalar'
 	end
 	page.titleBar:draw()
 	UI.Viewport.enable(self)
@@ -155,9 +155,9 @@ function pages.review:draw()
 	self:clear()
 	self:setCursorPos(1, 1)
 
-	local text = 'Ready to begin installation.\n\nProceeding will download and install the files to the hard drive.'
+	local text = 'Preparado para empezar la instalación.\n\nContinuar descargara e instalara los archivos en el disco duro.'
 	if mode == 'uninstall' then
-		text = 'Ready to begin.\n\nProceeding will remove the files previously installed.'
+		text = 'Preparado para empezar.\n\nContinuar removera los archivos previamente instalado'
 	end
 	self:print(text)
 
@@ -166,7 +166,7 @@ end
 
 --[[ Files ]]--
 function pages.files:enable()
-	page.titleBar.title = 'Review Files'
+	page.titleBar.title = 'Revisar archivos'
 	page.titleBar:draw()
 	self.grid.values = { }
 	for k,v in pairs(install.files) do
@@ -197,11 +197,11 @@ function pages.files:draw()
 			bg = colors.red
 		end
 
-		local text = string.format('Space Required: %s, Free: %s',
+		local text = string.format('Espacio Requerido: %s, Libre: %s',
 				formatSize(install.diskspace), formatSize(diskFree))
 
 		if #text > self.width then
-			text = string.format('Space: %s Free: %s',
+			text = string.format('Espacio: %s Libre: %s',
 				formatSize(install.diskspace), formatSize(diskFree))
 		end
 
@@ -213,7 +213,7 @@ end
 --[[
 function pages.files:view(url)
 	local s, m = pcall(function()
-		page.notification:info('Downloading')
+		page.notification:info('Descargando...')
 		page:sync()
 		Util.download(url, '/.source')
 	end)
@@ -238,15 +238,15 @@ end
 
 local function drawCommon(self)
 	if currentFile then
-		self:write(1, 3, 'File:')
+		self:write(1, 3, 'Archivo:')
 		self:write(1, 4, Util.widthify(currentFile, self.width))
 	else
-		self:write(1, 3, 'Finished')
+		self:write(1, 3, 'Terminado')
 	end
 	if self.failed then
 		self:write(1, 5, Util.widthify(self.failed, self.width), colors.red)
 	end
-	self:write(1, self.height - 1, 'Progress')
+	self:write(1, self.height - 1, 'Progreso')
 
 	self.progressBar.value = currentProgress
 	self.progressBar:draw()
@@ -255,7 +255,7 @@ end
 
 --[[ Branch ]]--
 function pages.branch:enable()
-	page.titleBar.title = 'Select Branch'
+	page.titleBar.title = 'Seleccione la rama'
 	page.titleBar:draw()
 	UI.Window.enable(self)
 end
@@ -274,7 +274,7 @@ function pages.install:enable()
 	page.wizard.previousButton:disable()
 	page.wizard.nextButton:disable()
 
-	page.titleBar.title = 'Installing...'
+	page.titleBar.title = 'Instalando...'
 	page.titleBar.event = nil
 	page.titleBar:draw()
 
@@ -321,10 +321,10 @@ function pages.install:enable()
 		end
 	end
 
-	page.wizard.nextButton.text = 'Exit'
+	page.wizard.nextButton.text = 'Salir'
 	page.wizard.nextButton.event = 'quit'
 	if not self.failed and install.rebootAfter then
-		page.wizard.nextButton.text = 'Reboot'
+		page.wizard.nextButton.text = 'Reiniciar'
 		page.wizard.nextButton.event = 'reboot'
 	end
 
@@ -343,9 +343,9 @@ end
 
 function pages.install:draw()
 	self:clear()
-	local text = 'The files are being installed'
+	local text = 'Los archivos estan siendo instalados'
 	if #text > self.width then
-		text = 'Installing files'
+		text = 'Instalando archivos'
 	end
 	self:write(1, 1, text, nil, colors.yellow)
 
@@ -358,7 +358,7 @@ function pages.uninstall:enable()
 	page.wizard.previousButton:disable()
 	page.wizard.nextButton:disable()
 
-	page.titleBar.title = 'Uninstalling...'
+	page.titleBar.title = 'Desinstalando...'
 	page.titleBar.event = nil
 
 	page:draw()
@@ -393,7 +393,7 @@ function pages.uninstall:enable()
 	currentProgress = 100
 	currentFile = nil
 
-	page.wizard.nextButton.text = 'Exit'
+	page.wizard.nextButton.text = 'Salir'
 	page.wizard.nextButton.event = 'quit'
 	page.wizard.nextButton:enable()
 
@@ -403,7 +403,7 @@ end
 
 function pages.uninstall:draw()
 	self:clear()
-	self:write(1, 1, 'Uninstalling files', nil, colors.yellow)
+	self:write(1, 1, 'Desinstalando Archivos', nil, colors.yellow)
 	drawCommon(self)
 end
 
@@ -437,7 +437,7 @@ getFileList()
 local wizardPages = { }
 for k,v in ipairs(steps) do
 	if not pages[v] then
-		error('Invalid step: ' .. v)
+		error('Paso Invalido: ' .. v)
 	end
 	wizardPages[k] = pages[v]
 	wizardPages[k].index = k
