@@ -47,7 +47,7 @@ end
 
 function Routine:resume(event, ...)
 	if not self.co then
-		error('Cannot resume a dead routine')
+		error('No se puede resumir una rutina muerta')
 	end
 
 	if not self.filter or self.filter == event or event == "terminate" then
@@ -68,7 +68,7 @@ function Routine:resume(event, ...)
 		end
 
 		if not s and event ~= 'terminate' then
-			error('\n' .. (m or 'Error processing event'))
+			error('\n' .. (m or 'Error procesando el evento'))
 		end
 
 		return s, m
